@@ -1,0 +1,154 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,100..900;1,100..900&display=swap');
+
+  .container {
+      width: 100%;
+      height: 100%;
+      padding: 0%;
+      display: flex;
+      justify-content: space-between;
+      border-radius: 8px; /* se mantiene en píxeles */
+      font-family: "Asap", sans-serif;
+      font-optical-sizing: auto;
+      box-shadow: 0.125% 0.125% 0.25% 0% gray; /* convertí el box-shadow */
+      background-color: white;
+  }
+
+  .wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      padding: 0.625%; /* 10px convertido a porcentaje */
+      /* Añade espacio alrededor del contenedor */
+      box-sizing: border-box;
+  }
+
+  .resultado {
+      font-size: 156.25%; /* 25px convertido a porcentaje */
+      font-weight: bold;
+      margin-top: 1.25%; /* 20px convertido a porcentaje */
+      margin-bottom: 1.25%; /* 20px convertido a porcentaje */
+  }
+
+  .kpi-icon {
+      width: 5%; /* 80px convertido a porcentaje (basado en 1600px ancho total) */
+      height: 5%; /* 80px convertido a porcentaje */
+      color: #fff;
+      align-items: center;
+  }
+
+  .details {
+      padding-left: 0.625%; /* 10px convertido a porcentaje */
+      padding-top: 0.625%; /* 10px convertido a porcentaje */
+      padding-right: 0.625%; /* 10px convertido a porcentaje */
+      width: 100%;
+  }
+
+  .informacion {
+      color: #9AB1E3;
+      font-size: 56.25%; /* 9px convertido a porcentaje */
+      font-weight: bold;
+      display:none;
+  }
+
+  span {
+      color: #8CB222;
+      font-weight: lighter;
+      font-size: 43.75%; /* 7px convertido a porcentaje */
+  }
+
+  .title {
+      font-size: 68.75%; /* 11px convertido a porcentaje */
+      color: #000;
+      font-weight: bold;
+      margin-top: 0.9375%; /* 15px convertido a porcentaje */
+  }
+
+  .subttitulo {
+      font-size: 56.25%; /* 9px convertido a porcentaje */
+      color: #a79c9c;
+      font-weight: bold;
+      margin: 0;
+  }
+
+  .value {
+      color: #333;
+      margin-top: 0.3125%; /* 5px convertido a porcentaje */
+      font-size: 125%; /* 20px convertido a porcentaje */
+  }
+
+  .icono {
+      width: 100%;
+      height: 100%;
+  }
+
+  .seccionReal {
+      color: #a79c9c;
+      font-size: 87.5%; /* 14px convertido a porcentaje */
+      font-weight: bold;
+      margin-top: 0%;
+      margin-bottom: 0.3125%; /* 5px convertido a porcentaje */
+  }
+
+  .real {
+      display: none;
+      margin-top: 0%;
+      font-size: 156.25%; /* 25px convertido a porcentaje */
+      margin-bottom: 0.9375%; /* 15px convertido a porcentaje */
+  }
+
+  #valor {
+      margin-top: 0%;
+      font-size: 125%; /* 20px convertido a porcentaje */
+      margin-bottom: 0.9375%; /* 15px convertido a porcentaje */
+  }
+
+  .subtitle {
+      font-size: 87.5%; /* 14px convertido a porcentaje */
+  }
+
+  .cont-icono {
+      background-color: #0064A9;
+      width: 15%;
+      align-content: center;
+      align-items: center;
+      padding: 1.25%; /* 20px convertido a porcentaje */
+      display: flex;
+      flex-direction: center;
+      -ms-flex-align: center;
+      border-radius: 8px 0 0 8px; /* se mantiene en píxeles */
+  }
+</style>
+
+
+
+<div class="wrapper">
+
+  <div class="container">
+      <div class="cont-icono">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chart-infographic" width="64"
+              height="64" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M7 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+              <path d="M7 3v4h4" />
+              <path d="M9 17l0 4" />
+              <path d="M17 14l0 7" />
+              <path d="M13 13l0 8" />
+              <path d="M21 12l0 9" />
+          </svg>
+      </div>
+      <div class="details">
+          <h1 class="title"></h1>
+          <p class="resultado" id="resultado"></p>
+          <p class="subtitle"></p>
+          <p class="real"></p>
+          <div id="valor">75.45</div>
+          <p class="seccionReal">Real</p>
+          <div class="value">75.45</div>
+          <p class="informacion"></p>
+      </div>
+  </div>
+</div>

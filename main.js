@@ -7,11 +7,18 @@ var getScriptPromisify = (src) => {
 var parseMetadata = metadata => {
   const { mainStructureMembers: measuresMap } = metadata;
   const measures = [];
+  const measures2 = [];
   for (const key in measuresMap) {
     const measure = measuresMap[key];
-    measures.push({ key, ...measure });
+    
+    
+    if (measure.feed === 'measures') {
+      measures.push({ key, ...measure });
+    } else if (measure.feed === 'measures2') {
+      measures2.push({ key, ...measure });
+    }
   }
-  return { measures, measuresMap };
+  return { measures, measures2, measuresMap };
 };
 
 (function () {
@@ -46,88 +53,96 @@ var parseMetadata = metadata => {
     }
 
     .resultado{
-        font-size: 30px;
-      font-weight: bold;
-      margin-top: 20px;
-      margin-bottom: 20px;
+        font-size: 156.25%; /* 25px convertido a porcentaje */
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
     .kpi-icon {
-      width: 80px;
-      height: 80px;
-      color: #fff;
-      align-items: center;
+        width: 80px;
+        height: 80px;
+        color: #fff;
+        align-items: center;
     }
 
     .details {
-      padding-left: 10px;
-      padding-top: 10px;
-      padding-right: 10px;
-      width: 100%;
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-right: 10px;
+        width: 100%;
     }
 
     .informacion {
-      color: #9AB1E3;
-      font-size: 14px;
-      font-weight: bold;
-      display:none;
+        color: #9AB1E3;
+        font-size: 56.25%; /* 9px convertido a porcentaje */
+        font-weight: bold;
+        display:none;
     }
 
     span {
-      color: #8CB222;
-      font-weight: lighter;
-      font-size: 12px;
+        color: #8CB222;
+        font-weight: lighter;
+        font-size: 43.75%; /* 7px convertido a porcentaje */
     }
 
     .title {
-      font-size: 16px;
-      color: #000;
-      font-weight: bold;
-      margin-top: 15px;
-      
+        font-size: 68.75%; /* 11px convertido a porcentaje */
+        color: #000;
+        font-weight: bold;
+        margin-top: 15px;
     }
 
     .subttitulo {
-      font-size: 14px;
-      color: #a79c9c;
-      font-weight: bold;
-      margin: 0;
+        font-size: 56.25%; /* 9px convertido a porcentaje */
+        color: #a79c9c;
+        font-weight: bold;
+        margin: 0;
     }
 
     .value {
-      color: #333;
-      margin-top: 5px;
-      font-size: 30px;
+        color: #333;
+        margin-top: 5px;
+        font-size: 125%; /* 20px convertido a porcentaje */
     }
-     .icono{
-    width: 100%;
-    height: 100%;
-}  
+
+    .icono{
+        width: 100%;
+        height: 100%;
+    }  
     .seccionReal{
-    color: #a79c9c;
-    font-size: 14px;
-    font-weight: bold;
-    margin-top: 0px;
-    margin-bottom: 5px;
-}
-.real{
-    margin-top: 0px;
-    font-size: 30px;
-    margin-bottom: 15px;
-}
-    
+        color: #a79c9c;
+        font-size: 87.5%; /* 14px convertido a porcentaje */
+        font-weight: bold;
+        margin-top: 0px;
+        margin-bottom: 5px;
+    }
+    .real{
+        display: none;
+        margin-top: 0px;
+        font-size: 156.25%; /* 25px convertido a porcentaje */
+        margin-bottom: 15px;
+    }
+    #valor{
+        margin-top: 0px;
+        font-size: 125%; /* 20px convertido a porcentaje */
+        margin-bottom: 15px;
+    }
+    .subtitle{
+        font-size: 87.5%; /* 14px convertido a porcentaje */
+    }
 
     .cont-icono {
-      background-color: #0064A9;
-      width: 15%;
-      align-content: center;
-      align-items: center;
-      padding: 20px;
-      display: flex;
-      flex-direction: center;
-      -ms-flex-align: center;
-      border-radius: 8px 0 0 8px;
+        background-color: #0064A9;
+        width: 15%;
+        align-content: center;
+        align-items: center;
+        padding: 20px;
+        display: flex;
+        flex-direction: center;
+        -ms-flex-align: center;
+        border-radius: 8px 0 0 8px;
     }
-  </style>
+</style>
 
 
 
@@ -152,6 +167,7 @@ var parseMetadata = metadata => {
             <p class="resultado" id="resultado"></p>
             <p class="subtitle"></p>
             <p class="real"></p>
+            <div id="valor">75.45</div>
             <p class="seccionReal">Real</p>
             <div class="value">75.45</div>
             <p class="informacion"></p>
@@ -275,35 +291,45 @@ var parseMetadata = metadata => {
         for(const mutation of mutationsList) {
           if (mutation.type === 'childList' || mutation.type === 'characterData') {
             console.log('El contenido ha cambiado:', this._valueElement.textContent);
-            // Aquí puedes agregar la lógica que necesites ejecutar al detectar el cambio
-            this.cuenta(); // Por ejemplo, recalcular y actualizar el porcentaje
+            
+            this.cuenta(); 
           }
         }
       });
 
-      // Iniciar la observación del elemento _valueElement
+      
       observer.observe(this._valueElement, { childList: true, characterData: true, subtree: true });
     }
 
-   
+    
 
     async render() {
       const dataBinding = this.dataBinding;
       if (!dataBinding || dataBinding.state !== 'success') { return; }
-
+    
       await getScriptPromisify('https://cdn.staticfile.org/echarts/5.0.0/echarts.min.js');
-
+    
       const { data, metadata } = dataBinding;
-      const { measures } = parseMetadata(metadata);
-
+      const { measures, measures2 } = parseMetadata(metadata);
+    
+      
       if (measures.length === 0) return;
-
+    
       const measureKey = measures[0].key;
       let value = data.length > 0 ? data[0][measureKey].raw : 0;
-
-      value = parseFloat(value).toFixed(2);  // Redondear a dos decimales
-
+    
+      value = parseFloat(value).toFixed(2);  
       this._shadowRoot.querySelector('.value').textContent = `${value} `;
+    
+      const measureKey2 = measures[1].key;  
+      let realValue = data.length > 0 ? data[0][measureKey2].raw : 0;
+      
+      realValue = parseFloat(realValue).toFixed(2);  
+      this._shadowRoot.getElementById('valor').textContent = `${realValue} `;
+      console.log("valor ", realValue);
+
+    
+      this.cuenta();  
     }
   }
 
